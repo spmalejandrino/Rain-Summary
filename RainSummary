@@ -1,0 +1,85 @@
+import java.util.Random;
+
+public class Rain {
+    private static final int NUMDAYS = 7; // day 0 = Monday, ..., day 6 = Sunday
+    private static final int NUMWEEKS = 52;
+    
+    private double[][] rainData; 
+    
+    /*  
+     * The constructor assigns random amounts of rain to each day of the week, for all 52 weeks.
+     */
+
+    public Rain()
+    {
+        Random r = new Random();
+        double rainAmount;
+        double rainDay;
+        rainData = new double[NUMWEEKS][NUMDAYS];
+        for (int week = 0; week < NUMWEEKS; week++) {
+            for (int day = 0; day < NUMDAYS; day++) {
+                rainAmount = 0.0;
+                rainDay = r.nextDouble();
+                if (rainDay < .05) {
+                    rainAmount = r.nextDouble()*1.8;
+                }
+                else if (rainDay < .25) {
+                    rainAmount = r.nextDouble();
+                }
+                rainData[week][day] = rainAmount;
+            }
+        }
+    }
+    
+    public double totalRainfall(){
+        double sum = 0;
+        for (int week = 0; week < NUMWEEKS; week++){
+            for (int day = 0; day < NUMDAYS; day++){
+                sum += rainData[week][day];
+            }
+        } return sum;
+    } 
+    
+    public int dryDays(){
+        int sum = 0;
+        for (int week = 0; week < NUMWEEKS; week++){
+            for (int day = 0; day < NUMDAYS; day++){
+                if(rainData[week][day] <= 0)
+                    sum++;
+            }
+        } return sum;
+    }
+    
+    public double averageRainfall(){
+        double sum = 0;
+        for (int week = 0; week < NUMWEEKS; week++){
+            for (int day = 0; day < NUMDAYS; day++){
+                sum += rainData[week][day];
+            }
+        } return (double)(sum/(NUMDAYS*NUMWEEKS));
+    } 
+    
+    public int washoutWeekends(){
+        int sum = 0;
+        for (int week = 0; week < NUMWEEKS; week++){
+                if (rainData[week][5] != 0 || rainData[week][6] != 0)
+                    sum++;
+        } return sum;
+    }   
+    
+    public int dryWeeks(){
+        int sum = 0;
+        int dayRain = 0;
+        for (int week = 0; week < NUMWEEKS; week++){
+            for (int day = 0; day < NUMDAYS; day++){
+                if(rainData[week][day] > 0)
+                    dayRain++;
+            } 
+            if (dayRain == 0)
+            sum++;
+            dayRain = 0;
+        }
+        
+        return sum;
+    }
+}
